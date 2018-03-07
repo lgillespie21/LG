@@ -1,0 +1,132 @@
+import edu.duke.*;
+import org.apache.commons.csv.*;
+
+public class CaesarCipher{
+public String encrypt (String input, int key){
+        input = input.toUpperCase();
+        StringBuilder encr = new StringBuilder(input);
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String shiftedAlphabet = alphabet.substring(key) + alphabet.substring(0,key);
+            for(int i = 0; i < encr.length(); i++){
+                char currentChar = encr.charAt(i);
+                int index = alphabet.indexOf(currentChar);
+                if(index!=-1){
+                    char newChar = shiftedAlphabet.charAt(index);
+                    encr.setCharAt(i, newChar);
+                }
+            }
+                    return encr.toString();
+        }
+public String reverse(String s){
+        String ret = "";
+        for(int k = 0; k < s.length(); k += 1){
+            ret = s.charAt(k) + ret;
+        }
+        return ret;
+    }
+public void testReverseString(){
+        String s = "pit";
+        String backward = reverse(s);
+        System.out.println(backward);
+    }
+public void conversionTest(){
+        String example = "ABCDEFabcdef123!@#";
+        for(int k = 0; k < example.length(); k++){
+            char character = example.charAt(k);
+            char characterUp = Character.toUpperCase(character);
+            char characterLo = Character.toLowerCase(character);
+            System.out.println(character + " " + characterUp + " " + characterLo);
+        }
+    }
+    public void testCaesar(){
+        int key = 17;
+        FileResource fr = new FileResource();
+        String message = fr.asString();
+        String encrypted = encrypt(message, key);
+        System.out.println(encrypted);
+        String decrypted = encrypt(encrypted,26-key);
+        System.out.println(decrypted);
+}
+public boolean isVowel(char ch){
+    if ( ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' ||
+    ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U') {
+        return true;
+    }
+    return false;
+}
+public void testVowel () {
+    System.out.println("isVowel('F') should return false:" + isVowel('F'));
+    System.out.println("isVowel('a') should reurn true:" + isVowel('a'));
+}
+public String replaceVowels(String phrase, char ch){
+        StringBuilder newString = new StringBuilder(phrase);
+        for(int i = 0; i < phrase.length(); i++){
+            if(isVowel(newString.charAt(i))){
+                newString.setCharAt(i, ch);
+            }
+        }
+        return newString.toString();
+    }
+public void testReplaceVowels(){
+        System.out.println(replaceVowels("Larry is Strong and Cool", '~'));
+        System.out.println(replaceVowels("Larry is Strong and Cool", '*'));
+        System.out.println(replaceVowels("Larry is Strong and Cool", '+'));
+    }
+public String emphasize(String phrase, char ch1, char ch2){
+        StringBuilder newString = new StringBuilder(phrase);
+        for(int i = 0; i < phrase.length(); i++){
+            if(isVowel(newString.charAt(i))){
+            if(i%2==0){
+                newString.setCharAt(i, '+');
+            }
+            else{
+                newString.setCharAt(i, '*');
+            }
+        }
+    }
+        return newString.toString();
+    }
+public void testEmphasize(){
+        System.out.println(emphasize("Larry is Strong and Cool", '*', '+'));
+    }
+public String encryptTwo(String input, int key1, int key2){
+        input = input.toUpperCase();
+        StringBuilder encr = new StringBuilder(input);
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String shiftedAlphabet1 = alphabet.substring(key1) + alphabet.substring(0,key1);
+        String shiftedAlphabet2 = alphabet.substring(key2) + alphabet.substring(0,key2);
+        for(int i = 0; i < encr.length(); i++){
+            char currentChar = encr.charAt(i);
+            int index = alphabet.indexOf(currentChar);
+            if(index!=-1){
+                if(index%2==0){
+                    char newChar = shiftedAlphabet1.charAt(index);
+                    encr.setCharAt(i, newChar);
+                }
+                else{
+                    char newChar = shiftedAlphabet2.charAt(index);
+                    encr.setCharAt(i, newChar);
+                }
+            }
+        }
+        return encr.toString();
+    }
+public void testTwoKeys(){
+        int key1 = 21;
+        int key2 = 52;
+        FileResource fr = new FileResource();
+        String message = fr.asString();
+        String encrypted1 = encrypt(message, key1);
+        System.out.println(encrypted1);
+        String decrypted1 = encrypt(encrypted1, 26-key1);
+        System.out.println(decrypted1);
+        
+        String encrypted2 = encrypt(message, key2);
+        System.out.println(encrypted1);
+        String decrypted2 = encrypt(encrypted2, 26-key2);
+        System.out.println(decrypted2);
+    }
+}
+
+
+
